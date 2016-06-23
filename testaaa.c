@@ -1,5 +1,5 @@
 #include <stdio.h>
-#define FILENAME "user.txt"  // Á¤È®ÇÑ ÆÄÀÏ ÀÌ¸§À» Àû¾î Áİ´Ï´Ù. ÇöÀç´Â ½ÇÇàµÇ´Â ÇÁ·Î±×·¥ Æú´õ¿¡ ÀÖ´Â °ÍÀ¸·Î °¡Á¤
+#define FILENAME "user8_1.txt"  // ì •í™•í•œ íŒŒì¼ ì´ë¦„ì„ ì ì–´ ì¤ë‹ˆë‹¤. í˜„ì¬ëŠ” ì‹¤í–‰ë˜ëŠ” í”„ë¡œê·¸ë¨ í´ë”ì— ìˆëŠ” ê²ƒìœ¼ë¡œ ê°€ì •
 
 typedef struct
 {
@@ -24,87 +24,115 @@ typedef struct
    Adj* first;
 } User;
 
-void Use_init(User* self)
+void User_init(User* self)
 {
     strcpy(self->id,"(none)");
     strcpy(self->date,"(none)");
     strcpy(self->name,"(none)");
     self->first = NULL;
+    self->n=0;
 
 }
 
-void User_add(User* self, User* u)
+/*void User_add(User self, User* u)
 {
     Adj* a = (Adj*)malloc(sizeof(Adj));
     a->n = u->n;
     a->next = self->first;
     self->first = a;
-}
+}*/
 
 
- // ÃÖ´ë 20 ¸í ±îÁö ÀúÀå
+ // ìµœëŒ€ 20 ëª… ê¹Œì§€ ì €ì¥
 int GetMenu();
-// ÇöÀç ³»¿ëÀ» Ãâ·Â
+// í˜„ì¬ ë‚´ìš©ì„ ì¶œë ¥
 void Display(User s[], int count);
-// ÇĞ»ı Ãß°¡
-void Add(User s[], int *count);
-// ÇöÀç ÆÄÀÏ ³»¿ëÀ» ÀĞ¾î ¿È
+// í•™ìƒ ì¶”ê°€
+//void Add(User s[], int *count);
+// í˜„ì¬ íŒŒì¼ ë‚´ìš©ì„ ì½ì–´ ì˜´
 void Read(char* file, User s[], int *count);
-// ÇöÀç ³»¿ëÀ» ÀúÀå
+// í˜„ì¬ ë‚´ìš©ì„ ì €ì¥
 void Save(char* file, User s[], int count);
+
+
+
+#define NELEM 8
+
 int main()
 {
-   //User user[20];
-   User* user =(User*)malloc(sizeof(User));
+
+    User users[NELEM];
+
+
+    int i;
+    for(i=0;i<NELEM; i++)
+    {
+        User_init(&users[i]);
+    }
+    for(i=0; i<NELEM; i++)
+    {
+        users[i].n=i;
+    }
+    User* a = users+0;
+    User* b = users+1;
+    User* c = users+2;
+    User* d = users+3;
+    User* e = users+4;
+    User* f = users+5;
+    User* g = users+6;
+    User* h = users+7;
+
+
+  // User* user =(User*)malloc(sizeof(User));
    int count = 0;
    int menu = 0;
-   int i;
-   // ÆÄÀÏ¿¡ ÀúÀåµÇ¾î ÀÖ´Â ³»¿ëÀ» ¸ÕÀú ÀĞ¾î ¿É´Ï´Ù
-   Read(FILENAME, user, &count);
+
+   // íŒŒì¼ì— ì €ì¥ë˜ì–´ ìˆëŠ” ë‚´ìš©ì„ ë¨¼ì € ì½ì–´ ì˜µë‹ˆë‹¤
+   Read(FILENAME, users, &count);
    while ( menu != 99 )
    {
       menu = GetMenu();
       switch ( menu )
       {
          case 0:
-         Read(FILENAME, user, &count);
-         ReadDataFile(user, count);
-         Display(user, count);
+         Read(FILENAME, users, &count);
+        // ReadDataFile(users, count);
+         Display(users, count);
          break;
          case 1:
-         Add(user, &count);
+        // Add(user, &count);
          break;
          case 2:
-         Add(user, &count);
+         //Add(user, &count);
          break;
          case 3:
-         Add(user, &count);
+         //Add(user, &count);
          break;
          case 4:
-         Add(user, &count);
+         //Add(user, &count);
          break;
          case 5:
-         Add(user, &count);
+         //Add(user, &count);
          break;
          case 6:
-         Add(user, &count);
+         //Add(user, &count);
          break;
          case 7:
-         Add(user, &count);
+        // Add(user, &count);
          break;
          case 8:
-         Add(user, &count);
+        // Add(user, &count);
          break;
          case 9:
-         Add(user, &count);
+       //  Add(user, &count);
          break;
          case 99:
          default:
          break;
       }
    }
-   // °á°ú ÀúÀå
-   Save(FILENAME, user, count);
+   // ê²°ê³¼ ì €ì¥
+   //Save(FILENAME, users, count);
    return 0;
 }
 int GetMenu()
@@ -130,19 +158,18 @@ int GetMenu()
    } while ( (menu < 0 || menu > 9)&&(menu!=99));
    return menu;
 }
-void Display(User* user, int count)
+void Display(User users[], int count)
 {
    int i;
-
    printf("\n\n");
-   for ( i = 0; i < count; ++i )
-   printf("%10s%10s%10s",user->id, user->date, user->name);
+   for ( i = 0; i <8; ++i )
+   printf("%10s%10s%10s", users[i].id, users[i].date, users[i].name);
    printf("\n\n");
 }
 
 void ReadDataFile(User* user, int count)
 {
-    int i;
+    //int i;
     int total_user=count;
 
     printf("Total user : %d\n", total_user);
@@ -152,32 +179,34 @@ void ReadDataFile(User* user, int count)
    ++(*count);
    if ( *count >= COUNT)
    {
-      printf("´õ ÀÌ»ó Ãß°¡ÇÒ ¼ö ¾ø½À´Ï´Ù.\n");
+      printf("ë” ì´ìƒ ì¶”ê°€í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.\n");
       return;
    }
-   printf("ÀÌ¸§ : "); scanf("%s", s[*count-1].id);
-   printf("ÇĞ±³ : "); scanf("%s", s[*count-1].date);
-   printf("ÇĞ°ú : "); scanf("%s", s[*count-1].name);
+   printf("ì´ë¦„ : "); scanf("%s", s[*count-1].id);
+   printf("í•™êµ : "); scanf("%s", s[*count-1].date);
+   printf("í•™ê³¼ : "); scanf("%s", s[*count-1].name);
 }*/
-void Read(char* file, User * user, int *count)
+void Read(char* file, User s[], int *count)
 {
    FILE* pFile;
    char str[40];
+   int i;
 
    pFile = fopen(FILENAME, "rt");
 
 
-   fgets(s[*count].id, sizeof(s[*count].id), pFile);
-   fgets(s[*count].date, sizeof(s[*count].date), pFile);
-   fgets(s[*count].name, sizeof(s[*count].name), pFile);
+   fgets(s[0].id, sizeof(s[0].id), pFile);
+   fgets(s[0].date, sizeof(s[0].date), pFile);
+   fgets(s[0].name, sizeof(s[0].name), pFile);
+   fgets(str,sizeof(str),pFile);
 
 
-   while ( !feof(pFile) )
-   {
-      ++(*count);
-      fgets(s[*count].id, sizeof(s[*count].id), pFile);
-      fgets(s[*count].date, sizeof(s[*count].date), pFile);
-      fgets(s[*count].name, sizeof(s[*count].name), pFile);
+    for(i=1; i<8;i++){
+
+      fgets(s[i].id, sizeof(s[i].id), pFile);
+      fgets(s[i].date, sizeof(s[i].date), pFile);
+      fgets(s[i].name, sizeof(s[i].name), pFile);
+      fgets(str,sizeof(str),pFile);
    }
    fclose(pFile);
 
@@ -188,7 +217,7 @@ void Save(char* file, User s[], int count)
    FILE* pFile;
    int i;
    pFile = fopen(file, "wt");
-   for ( i = 0; i < count; ++i )
+   for ( i = 0; i < NELEM; ++i )
    fprintf(pFile, "%10s%10s%10s\n", s[i].id, s[i].date, s[i].name);
    fclose(pFile);
 }
