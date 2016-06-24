@@ -1,69 +1,76 @@
-﻿#define SEEK_CUR    1
-#define SEEK_END    2
-#define SEEK_SET    0
-
-
-//회원 데이터를 파일에 출력한 후 닫고 찾고자 하는 순서 번호를 입력받아 회원 정보를 출력  
 #include <stdio.h>
+#include <stdlib.h>
+#include "def.h"
 
-#define MAX_NAME_LEN    20
-typedef struct {
-	char name[MAX_NAME_LEN + 1];
-	int age;
-}Member;
-
-#define MAX_MEMBERS 10
-int main(void)
+void ListInit(List * plist)
 {
-	FILE * fp;
-	int n;
-	Member members[MAX_MEMBERS] =
-	{
-		{ "홍길동",20 },{ "강감찬",15 },{ "을지문덕",22 },{ "이순신",19 },{ "김구",30 },
-		{ "안중근",30 },{ "박찬호",35 },{ "김연아",17 },{ "아이유",20 },{ "주니엘",20 }
-	};
-	Member member;
-
-	fopen_s(&fp, "data.txt", "wb");//쓰기 모드로 파일 열기
-	if (fp == NULL)
-	{
-		perror("error fopen");
-		return 0;
-	}
-	//출력 파일 스트림에 회원 정보 출력
-	if (fwrite(members, sizeof(Member), MAX_MEMBERS, fp) != MAX_MEMBERS)
-	{
-		printf("출력 오류\n");
-		return 0;
-	}
-	fclose(fp);//출력 파일 스트림 닫기
-
-	printf("회원 순서 번호 입력(1~%d)  : ", MAX_MEMBERS);
-	scanf_s("%d", &n);//조회할 회원 순서 번호 입력
-	if ((n<1) || (n>MAX_MEMBERS))//순서 번호가 범위를 벗어날 때
-	{
-		printf("입력 오류\n");
-		return 0;
-	}
-
-	fopen_s(&fp, "data.txt", "rb");//읽기 모드로 파일 열기
-	if (fp == NULL)
-	{
-		perror("error fopen");
-		return 0;
-	}
-
-	fseek(fp, sizeof(Member)*(n - 1), SEEK_SET);//파일 position 이동
-	fread(&member, sizeof(Member), 1, fp);  //회원 데이터 읽기
-	printf("이름: %s 번호: %d\n", member.name, member.age);//회원 데이터 출력
-
-
-
-	fclose(fp);//입력 파일 스트림 닫기
-
-	getchar();
-
-
-	return 0;
+	plist->head = (Vertex*)malloc(sizeof(Vertex));
+	plist->head->next = NULL;
+	plist->numOfData = 0;
 }
 
+void FInsert(List * plist, LData data)
+{
+	Vertex * vertex = (Vertex*)malloc(sizeof(Vertex));
+	vertex->data = data;
+
+	vertex->next = plist->head->next;
+	plist->head->next = vertex;
+
+	(plist->numOfData)++;
+}//vertex�� ����.
+
+
+void LInsert(List * plist, LData data)
+{
+	if (plist->comp == NULL)
+		FInsert(plist, data);
+	/*	else
+	SInsert(plist, data);*/
+
+}
+
+int LFirst(List * plist, LData * pdata)
+{
+	if (plist->head->next == NULL)
+		return FALSE;
+
+	plist->before = plist->head;
+	plist->cur = plist->head->next;
+
+	*pdata = plist->cur->data;
+
+	return TRUE;
+}
+
+int LNext(List * plist, LData * pdata)
+{
+	if (plist->cur->next == NULL)
+		return FALSE;
+	plist->before = plist->cur;
+	plist->cur = plist->cur->next;
+
+	*pdata = plist->cur->data;
+	return TRUE;
+}
+
+LData LRemove(List * plist)
+{
+	Vertex * rpos = plist->cur;
+	LData rdata = rpos->data;
+
+	plist->before->next = plist->cur->next;
+	plist->cur = plist->before;
+
+
+	free(rpos);
+	(plist->numOfData)--;
+	return rdata;
+
+
+}
+
+int LCount(List * plist)
+{
+	return plist->numOfData;
+}
