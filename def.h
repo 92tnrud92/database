@@ -1,7 +1,8 @@
 #ifndef __D_LINKED_LIST_H__
 #define __D_LINKED_LIST_H__
 #include <string.h>
-#define FILENAME "/Users/SuGyeong/Desktop/test/user.txt"
+
+#define FILENAME "/Users/SuGyeong/Desktop/test/usersample.txt"
 
 #define TRUE 1
 #define FALSE 0
@@ -14,15 +15,16 @@
 //#define BLACK 1
 
 
-typedef struct Adj
-{
+typedef struct Adj {
 	char id[20];
-	Adj * friendnext;
-}Adj;
+	Adj* friendnext;
+} Adj;
+
 //초기화
+
 void Adj_init(Adj* self);
 
-typedef struct _LData
+typedef struct LData
 {
 	char id[20];
 	char date[40];
@@ -33,14 +35,12 @@ typedef struct _LData
 
 }LData;
 
-
-typedef struct _Vertex {
-
+typedef struct Vertex
+{
 	LData data;
-	Vertex * next;//USER관련 연결리스트.
-	Adj* first;//FRIEND 관련 연결리스트.
-
-} Vertex;
+	Adj * first;
+	Vertex * next;
+}Vertex;
 
 void Vertex_init(Vertex* self);
 void Vertex_add(Vertex* self, Vertex* v);
@@ -71,7 +71,7 @@ typedef LinkedList List;
 
 //void Adj_init(Adj* self);
 //void Friend_add(Node * self, Node * v);
-
+void LDataInit(LData * pdata);
 
 void FInsert(List * plist, LData data);
 //더미노드 다음 노드에 추가.
@@ -83,7 +83,8 @@ void LInsert(List * plist, LData data);
 int LFirst(List * plist, LData * pdata);
 int LNext(List * plist, LData * pdata);
 
-//LData LRemove(List* plist);
+void VertexRemove(List *plist);
+LData LRemove(List* plist);
 int LCount(List* plist);
 
 //void SetSortRule(List * plist, int(*comp)(LData d1, LData d2));
